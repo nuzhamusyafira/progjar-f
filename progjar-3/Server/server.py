@@ -10,7 +10,7 @@ sock.listen(5)
 print("Server listening...\n")
 
 def sendFile(client):
-    filename = ["pic1.png", "pic2.png", "pic3.png", "pic4.png"]
+    filename = ["Files/pic1.png", "Files/pic2.png", "Files/pic3.png", "Files/pic4.png"]
     for f in filename:
         client.send(f.encode('ascii'))
         fp = open(f, 'rb')

@@ -6,6 +6,7 @@ sock = socket.socket()
 sock.connect((SERVER_HOST, SERVER_PORT))
 filename = sock.recv(1024).decode('ascii')
 while filename:
+	filename = filename.replace("Files", "Downloads", 1)
 	with open(filename, 'wb') as fp:
 	    print("File", filename, "created")
 	    while True:
