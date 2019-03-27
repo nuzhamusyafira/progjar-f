@@ -4,24 +4,46 @@ SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 9000
 sock = socket.socket()
 sock.connect((SERVER_HOST, SERVER_PORT))
-filename = sock.recv(1024).decode('ascii')
-while filename:
-	filename = filename.replace("Files", "Downloads", 1)
-	with open(filename, 'wb') as fp:
-	    print("File", filename, "created")
-	    while True:
-	        print("Receiving data...")
-	        data = sock.recv(1024)
-	        try:
-	        	data = data.decode('ascii')
-	        	break
-	        except:
-	        	if not data:
-	        		break
-	        	fp.write(data)
-	    fp.close()
-	    print("Successfully get the file", filename)
-	    print()
-	filename = data
+connected = sock.recv(1024).decode('ascii')
+if connected:
+	print(connected)
+	print("\nType:")
+	print("1. req Files/<filename>\n--> To request files from Server")
+	print("\nOr\n")
+	print("2. send Files/<filename>\n--> To send files to Server\n")
+
+while True:
+	filename = input()
+	sock.send(filename.encode('ascii'))
+	if "req" in filename: 
+		filename = filename.replace("req Files", "Downloads", 1)
+		with open(filename, 'wb') as fp:
+		    print("File", filename, "created")
+		    print("Receiving data...")
+		    while True:
+		        data = sock.recv(1024)
+		        try:
+		        	data = data.decode('ascii')
+		        	break
+		        except:
+		        	if not data:
+		        		break
+		        	fp.write(data)
+		    fp.close()
+		    print("Successfully get the file", filename)
+		    print()
+	elif "send" in filename: 
+		filename = filename.replace("send ", "", 1)
+		fp = open(filename, 'rb')
+		k = fp.read(1024)
+		print("Sending", filename, "to Server")
+		print("Start sending..")
+		while (k):
+		    sock.send(k)
+		    k = fp.read(1024)
+		fp.close()
+		print("Done sending", filename)
+		print()
+		sock.send("done".encode('ascii'))
 sock.close()
 print("Connection closed")
