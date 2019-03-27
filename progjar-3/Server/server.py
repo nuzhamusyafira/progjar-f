@@ -14,8 +14,8 @@ print("Server listening...\n")
 def sendFile(client, ad):
     filename = client.recv(1024).decode('ascii')
     while filename:
-        if "req" in filename:
-            filename = filename.replace("req ", "", 1)
+        if "**req" in filename:
+            filename = filename.replace("**req ", "", 1)
             fp = open(filename, 'rb')
             k = fp.read(1024)
             print("Sending", filename, "to", ad)
@@ -27,8 +27,8 @@ def sendFile(client, ad):
             print("Done sending", filename)
             print()
             client.send("done".encode('ascii'))
-        elif "send" in filename:
-            filename = filename.replace("send " +FILE_FOLDER+ "", SAVE_FOLDER, 1)
+        elif "**send" in filename:
+            filename = filename.replace("**send " +FILE_FOLDER+ "", SAVE_FOLDER, 1)
             with open(filename, 'wb') as fp:
                 print("File", filename, "from", ad, "created")
                 print("Receiving data...")
