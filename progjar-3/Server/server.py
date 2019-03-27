@@ -4,6 +4,8 @@ import threading
 
 SERVER_HOST = "127.0.0.1"
 SERVER_PORT = 9000
+FILE_FOLDER = "Files"
+SAVE_FOLDER = "Downloads"
 sock = socket.socket()
 sock.bind((SERVER_HOST, SERVER_PORT))
 sock.listen(5)
@@ -26,7 +28,7 @@ def sendFile(client, ad):
             print()
             client.send("done".encode('ascii'))
         elif "send" in filename:
-            filename = filename.replace("send Files", "Downloads", 1)
+            filename = filename.replace("send " +FILE_FOLDER+ "", SAVE_FOLDER, 1)
             with open(filename, 'wb') as fp:
                 print("File", filename, "from", ad, "created")
                 print("Receiving data...")
