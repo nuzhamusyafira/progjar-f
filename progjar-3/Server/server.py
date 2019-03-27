@@ -44,7 +44,11 @@ def sendFile(client, ad):
                 fp.close()
                 print("Successfully save the file in", filename)
                 print()
-        filename = client.recv(1024).decode('ascii')
+        try:
+            filename = client.recv(1024).decode('ascii')
+        except:
+            print("Connection from", ad, "closed.")
+            break
 
 while True:
     conn, addr = sock.accept()
